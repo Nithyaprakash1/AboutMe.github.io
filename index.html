@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nithya Prakash - AI & Data Science Innovator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #343a40;
+            background: linear-gradient(135deg, #e0f2f7, #c1e0ed, #aed8ee);
+            background-size: 400% 400%;
+            animation: gradientWave 25s ease infinite;
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientWave {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header-bg {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            transition: transform 0.3s ease-in-out;
+        }
+        .header-hidden {
+            transform: translateY(-100%);
+        }
+        .section-heading {
+            border-left: 4px solid #4285F4;
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem;
+            transition: transform 0.2s ease-in-out;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Ensure content doesn't overflow during transitions */
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .project-image, .achievement-image {
+            width: 100%;
+            height: 100%; /* Fill the container height */
+            object-fit: contain;
+            border-radius: 8px;
+            position: absolute; /* Stack images */
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out; /* Smooth transition for opacity */
+            z-index: 1; /* Default z-index */
+        }
+        .project-image.active, .achievement-image.active {
+            opacity: 1;
+            z-index: 2; /* Bring active image to front */
+        }
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 250px; /* Fixed height for the container */
+            margin-bottom: 1rem;
+            overflow: hidden; /* Hide overflowing parts during transition if any */
+            border-radius: 8px;
+        }
+        .skill-icon {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin: 0 auto 0.5rem auto;
+        }
+        .certification-image {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            margin: 0 auto 0.5rem auto;
+            cursor: pointer;
+        }
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .slider-dots {
+            position: absolute;
+            bottom: 0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+        .dot {
+            height: 8px;
+            width: 8px;
+            background-color: rgba(0,0,0,0.3);
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+        .dot.active {
+            background-color: #4285F4;
+        }
+
+        .fortumars-logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+            height: 150px;
+        }
+        .fortumars-logo {
+            width: 500px;
+            height: auto;
+            animation: pulseGlow 2s infinite alternate;
+        }
+        @keyframes pulseGlow {
+            0% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(66, 133, 244, 0.3)); }
+            100% { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(66, 133, 244, 0.8)); }
+        }
+
+        .fullscreen-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .fullscreen-modal.active {
+            opacity: 1;
+            visibility: visible;
+            display: flex;
+        }
+        .fullscreen-modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+        .profile-photo-wrapper {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-photo-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(66,133,244,0.5) 0%, rgba(66,133,244,0) 70%);
+            animation: pulseGlowPhoto 3s infinite alternate;
+            z-index: -1;
+        }
+
+        @keyframes pulseGlowPhoto {
+            0% { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .list-disc li, .list-circle li {
+            margin-bottom: 0.25rem;
+            text-align: justify;
+        }
+        .list-disc li:last-child, .list-circle li:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="mainHeader" class="header-bg w-full shadow-sm py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="#home" class="text-2xl font-bold text-gray-800 hover:text-blue-600 transition duration-300">Nithya Prakash</a>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="#home" class="text-gray-600 hover:text-blue-600 font-medium transition duration-300">Home</a></li>
+                    <li><a href="#projects" class="text-gray-600 hover:text-blue-600 font-medium transition duration-300">Projects</a></li>
+                    <li><a href="#skills" class="text-gray-600 hover:text-blue-600 font-medium transition duration-300">Skills</a></li>
+                    <li><a href="#achievements" class="text-gray-600 hover:text-blue-600 font-medium transition duration-300">Achievements</a></li>
+                    <li><a href="#fortumars" class="text-gray-600 hover:text-blue-600 font-medium transition duration-300">For Fortumars</a></li>
+                    <li><a href="#contact" class="text-gray-600 hover:text-blue-600 font-medium transition duration-300">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="pt-20">
+
+        <section id="home" class="py-16 md:py-24">
+            <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-12">
+                <div class="md:w-1/3 flex justify-center">
+                    <div class="profile-photo-wrapper">
+                        <div class="profile-photo-glow"></div>
+                        <img src="assets/mypic2.jpg" alt="Nithya Prakash Profile" class="rounded-full shadow-xl border-4 border-white">
+                    </div>
+                </div>
+                <div class="md:w-2/3 text-center md:text-left">
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-4">Nithya Prakash</h1>
+                    <p class="text-xl text-gray-700 mb-6">AI & Data Science Student | Mobile & Web Developer</p>
+                    <p class="text-lg text-gray-600 leading-relaxed">
+                        I'm an AI and Data Science student who loves building cool stuff that helps people. My passion for tech started at <strong>Adwaith Thought Academy</strong>, and since then, I've been all about exploring new technologies and creating impactful products. I'm inspired by tech leaders who build for the world, and I'm always eager to learn and push the boundaries of what's possible in AI and product development. I've got hands-on experience in mobile and web development, plus a solid grasp of cloud tech and data management.
+                    </p>
+                    <div class="mt-8 flex flex-wrap justify-center md:justify-start gap-4">
+                        <a href="#projects" class="bg-gray-200 text-gray-800 px-6 py-3 rounded-full font-semibold hover:bg-gray-300 transition duration-300 shadow-lg">View Projects</a>
+                        <a href="https://sites.google.com/view/nithyaprakash/my-idol?authuser=0" target="_blank" class="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition duration-300 shadow-lg">About My Idol</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="py-16 md:py-20 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 section-heading">My Projects (<span class="text-blue-600">18</span> Total)</h2>
+                <p class="text-lg text-gray-700 mb-8 font-semibold">Revenue Generated: <span class="text-green-600">₹2.7L+</span> till now</p>
+
+                <h3 class="text-2xl font-semibold text-gray-700 mb-6">Completed & Deployed Projects (<span class="text-green-600">9</span>)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <div class="card project-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/blooddonors.png" alt="Blood Donor's Junction 1" class="project-image active">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">1. Blood Donor's Junction</h4>
+                        <p class="text-sm text-gray-500 mb-2"><strong>Role:</strong> Independent Developer | <strong>Date:</strong> September 2022</p>
+                        <p class="text-gray-700 mb-4">Mobile application connecting blood donors with those in need, benefiting over <strong>160+ individuals</strong>.</p>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li style="text-align: justify;">Independently developed by me during my <strong>12th Grade</strong>.</li>
+                            <li style="text-align: justify;">Received significant <strong>media coverage</strong> (The Covai Mail, The Times of India, Puthuyugam News Channel).</li>
+                            <li style="text-align: justify;">Appreciated by <strong>VGM Hospital</strong> for its innovative approach; donated blood group data to their blood bank.</li>
+                            <li style="text-align: justify;">Successfully released on <strong>Google Play Store</strong> & <strong>Amazon App Store</strong>.</li>
+                        </ul>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Technologies:</strong> YAIL, Kodular, Android Studio</p>
+                        <div class="flex flex-wrap gap-2 items-center">
+                            <a href="https://play.google.com/store/apps/details?id=nithyaprakash.com" target="_blank" class="text-blue-600 hover:underline text-sm flex items-center gap-1">
+                                <i class="fab fa-google-play"></i> Google Play
+                            </a>
+                            <a href="https://www.amazon.in/nithya-prakash-Blood-Donors-Junction/dp/B0BG94ZSC2/ref=sr_1_1?dib=eyJ2IjoiMSJ9.SXMG3FDnTYX2pxHQcUfDlw.u7Nbdx7bEF4ELVicOccedbdnHmJSP6GarAzHJh-VigU&dib_tag=se&keywords=blood+donors+junction&qid=1751905071&s=mobile-apps&sr=1-1" target="_blank" class="text-blue-600 hover:underline text-sm flex items-center gap-1">
+                                <i class="fab fa-amazon"></i> Amazon App Store
+                            </a>
+                            <a href="https://youtu.be/Qic0pfhMqdY?si=vlL2fl6CIGBFWAt2" target="_blank" class="text-blue-600 hover:underline text-sm flex items-center gap-1">
+                                <i class="fab fa-youtube"></i> YouTube Trailer
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card project-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/urlgo1.jpg" alt="URLgo 1" class="project-image active">
+                            <img src="assets/urlgo2.png" alt="URLgo 2" class="project-image">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">2. URLgo</h4>
+                        <p class="text-sm text-gray-500 mb-2"><strong>Role:</strong> Developer | <strong>Date:</strong> August 2024</p>
+                        <p class="text-gray-700 mb-4">Educational app offering diverse free and premium courses, including URLs to AI tools.</p>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li style="text-align: justify;">Ranked <strong>#44 in Top New Free in Education</strong> and <strong>#137 in Top Education Trending</strong> categories in India on Google Play Store.</li>
+                            <li style="text-align: justify;">Successfully released on <strong>Google Play Store</strong>.</li>
+                        </ul>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Technologies:</strong> Kotlin, Android Studio</p>
+                        <div class="flex flex-wrap gap-2 items-center">
+                            <a href="https://play.google.com/store/apps/details?id=nithyaprakash.me" target="_blank" class="text-blue-600 hover:underline text-sm flex items-center gap-1">
+                                <i class="fab fa-google-play"></i> Google Play
+                            </a>
+                            <a href="https://youtu.be/vdGb260So5Y?si=41w1XeuqnGUw5l1k" target="_blank" class="text-blue-600 hover:underline text-sm flex items-center gap-1">
+                                <i class="fab fa-youtube"></i> YouTube Trailer
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card project-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/blooddonorsrot.png" alt="Blood Donors (Coimbatore Rotary) 1" class="project-image active">
+                            <img src="assets/srascrot.png" alt="Blood Donors (Coimbatore Rotary) 1" class="project-image active">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">3. Blood Donors (Coimbatore Rotary)</h4>
+                        <p class="text-sm text-gray-500 mb-2"><strong>Role:</strong> Developer | <strong>Date:</strong> (Approx. January 2025)</p>
+                        <p class="text-gray-700 mb-4">Specific deployment and collaboration of the Blood Donor's Junction app tailored for Coimbatore Rotary's initiatives.</p>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li style="text-align: justify;">Facilitated specific blood donation drives and community outreach programs in partnership with Coimbatore Rotary.</li>
+                        </ul>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Technologies:</strong> Kotlin, Android Studio, Firebase</p>
+                    </div>
+
+                    <div class="card project-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/siet.png" alt="Grievance App 1" class="project-image active">
+                            <img src="assets/srasc.png" alt="Grievance App 1" class="project-image active">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">4. Grievance App (Sri Ramakrishna & Sri Shakthi Colleges)</h4>
+                        <p class="text-sm text-gray-500 mb-2"><strong>Role:</strong> Developer | <strong>Date:</strong> May 2025</p>
+                        <p class="text-gray-700 mb-4">Mobile application developed to streamline grievance submission and management for college students.</p>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li style="text-align: justify;">Improved efficiency and accessibility of the grievance redressal process for students.</li>
+                        </ul>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Technologies:</strong> Kotlin, Android Studio, Firebase - Firestore, GCP</p>
+                    </div>
+
+                    <div class="card project-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/adwaithlogo.png" alt="Adwaith School Website 1" class="project-image active">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">5. Adwaith School Website</h4>
+                        <p class="text-sm text-gray-500 mb-2"><strong>Role:</strong> Web Developer | <strong>Date:</strong> January 2025</p>
+                        <p class="text-gray-700 mb-4">Responsive website developed for Adwaith Thought Academy's School Expo.</p>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li style="text-align: justify;">Significantly boosted event visibility, increased reach, and enhanced engagement for the Expo.</li>
+                        </ul>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Technologies:</strong> HTML, CSS, JavaScript</p>
+                        <div class="flex flex-wrap gap-2 items-center">
+                            <a href="https://nithyaprakash1.github.io/ATA.github.io/" target="_blank" class="text-blue-600 hover:underline text-sm flex items-center gap-1">
+                                <i class="fas fa-globe"></i> View Website
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card project-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/rosnetacaapp.png" alt="Rosnet Academy 1" class="project-image active">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">6. Rosnet Academy App & Website</h4>
+                        <p class="text-sm text-gray-500 mb-2"><strong>Role:</strong> Developer | <strong>Date:</strong> February 2025</p>
+                        <p class="text-gray-700 mb-4">Educational mobile app for student management and a responsive promotional website.</p>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li style="text-align: justify;">Streamlined student registration, attendance tracking, and performance monitoring with interactive graph views.</li>
+                            <li style="text-align: justify;">Website promoted the academy and shared updates on academic events, web-hosted with domain and DNS configurations.</li>
+                        </ul>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Technologies:</strong> Kotlin, Android Studio, Firebase - Firestore ,authentication ,Storage ,CGP - Functions ,Push-up Notifications & Web Technologies (HTML, CSS, JS)</p>
+                        <div class="flex flex-wrap gap-2 items-center">
+                            <a href="https://play.google.com/store/apps/details?id=com.nithyaprakash.rosnetacademy" target="_blank" class="text-blue-600 hover:underline text-sm flex items-center gap-1">
+                                <i class="fab fa-google-play"></i> Google Play
+                            </a>
+                            <a href="https://rosnetacademy.in/" target="_blank" class="text-blue-600 hover:underline text-sm flex items-center gap-1">
+                                <i class="fas fa-globe"></i> View Website
+                            </a>
+                            <a href="https://youtu.be/6z7GTLyKP3M?si=2EBofAhMDH16lQfn" target="_blank" class="text-blue-600 hover:underline text-sm flex items-center gap-1">
+                                <i class="fab fa-youtube"></i> YouTube Trailer
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card project-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/igcs.png" alt="SAMRAT 1" class="project-image active">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">7. SAMRAT (Indian Coast Guard)</h4>
+                        <p class="text-sm text-gray-500 mb-2"><strong>Role:</strong> Developer | <strong>Date:</strong> January 2025</p>
+                        <p class="text-gray-700 mb-4">Suite of two high-performance mobile apps for the ICGS SAMRAT Ship.</p>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li style="text-align: justify;">Designed for <strong>zero-internet functionality</strong> and <strong>military-grade security</strong> for sensitive data.</li>
+                            <li style="text-align: justify;">Streamlined ship member registration/management and simplified library book management.</li>
+                            <li style="text-align: justify;">Deployed on <strong>ICGS - SAMRAT Ship</strong>.</li>
+                        </ul>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Technologies:</strong> Kotlin, Android Studio, RoomDB-SQL</p>
+                    </div>
+
+                    <div class="card project-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/facecapture.jpg" alt="FaceCapture App 1" class="project-image active">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">8. FaceCapture App (College AI Model Data Collection)</h4>
+                        <p class="text-sm text-gray-500 mb-2"><strong>Role:</strong> Developer | <strong>Date:</strong> October 2024</p>
+                        <p class="text-700 mb-4">Mobile application developed for college to securely collect student face data for ML model training.</p>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li style="text-align: justify;">Successfully facilitated the collection of essential face data, crucial for the development and training of the college's ML model.</li>
+                        </ul>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Technologies:</strong> Kotlin, Android Studio, RoomDB</p>
+                    </div>
+
+                    <div class="card project-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/lglogo.png" alt="Lg App 1" class="project-image active">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">9. FaTrip Calculator App</h4>
+                        <p class="text-sm text-gray-500 mb-2"><strong>Role:</strong> Developer | <strong>Date:</strong> March 2025</p>
+                        <p class="text-700 mb-4">developed the "Trip Calculator" app, exclusively for L.G employees. Track your spending seamlessly, even without internet access.</p>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Technologies:</strong> Kotlin, Android Studio, RoomDB</p>
+                    </div>
+
+                </div>
+
+                <h3 class="text-2xl font-semibold text-gray-700 mt-12 mb-6">CLI & Desktop Software (<span class="text-purple-600">6</span>)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <div class="card project-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/fridaylogo.ico" alt="F.R.I.D.A.Y. 1" class="project-image active">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">10. F.R.I.D.A.Y. (Personal Assistant)</h4>
+                        <p class="text-sm text-gray-500 mb-2"><strong>Role:</strong> Developer | <strong>Date:</strong> 2022 (First Year)</p>
+                        <p class="text-gray-700 mb-4">Female Replacement Intelligent Digital Assistant Youth – a personal assistant developed for Windows OS.</p>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li style="text-align: justify;">Provided intelligent digital assistance functionalities on the Windows platform.</li>
+                        </ul>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Technologies:</strong> Pycharm, Python, Windows OS</p>
+                    </div>
+                    <div class="card project-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/filestoziplogo.png" alt="File-to-Zip Converter 1" class="project-image active">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">11. File-to-Zip Converter</h4>
+                        <p class="text-sm text-gray-500 mb-2"><strong>Role:</strong> Developer | <strong>Date:</strong> 2022 (First Year)</p>
+                        <p class="text-gray-700 mb-4">Software that compresses multiple files and folders into a single, smaller ZIP file.</p>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li style="text-align: justify;">Streamlined file organization and reduced storage space through efficient compression.</li>
+                        </ul>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Technologies:</strong> Pycharm, Python, Windows OS</p>
+                    </div>
+                    <div class="card project-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/phototopdflogo.png" alt="Photo-to-PDF Converter 1" class="project-image active">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">12. Photo-to-PDF Converter</h4>
+                        <p class="text-sm text-gray-500 mb-2"><strong>Role:</strong> Developer | <strong>Date:</strong> 2022 (First Year)</p>
+                        <p class="text-gray-700 mb-4">Software that combines multiple image files (JPEG, PNG, BMP) into a single PDF document.</p>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li style="text-align: justify;">Provided a convenient way to consolidate images into a universally accessible document format.</li>
+                        </ul>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Technologies:</strong> Python, Windows OS</p>
+                    </div>
+                    <div class="card project-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/snakegamelogo.png" alt="Snake Game Logo" class="project-image active">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">13. Snake Game</h4>
+                        <p class="text-sm text-gray-500 mb-2"><strong>Role:</strong> Developer | <strong>Date:</strong> 2022 (First Year)</p>
+                        <p class="text-gray-700 mb-4">OG Snake Game Developed using Python for Windows OS platform</p>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Technologies:</strong> Pycharm, Python, Pygame, Windows OS</p>
+                    </div>
+                    <div class="card project-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/ponglogo.png" alt="Multiplayer Pong Game" class="project-image active">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">14. Multiplayer Pong Game</h4>
+                        <p class="text-sm text-gray-500 mb-2"><strong>Role:</strong> Developer | <strong>Date:</strong> 2022 (First Year)</p>
+                        <p class="text-gray-700 mb-4">OG Multiplayer Pong Game Developed using Python for Windows OS platform</p>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Technologies:</strong> Pycharm, Python,Pygame Windows OS</p>
+                    </div>
+                    <div class="card project-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/todolistlogo.png" alt="Photo-to-PDF Converter 1" class="project-image active">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">15. To Do List</h4>
+                        <p class="text-sm text-gray-500 mb-2"><strong>Role:</strong> Developer | <strong>Date:</strong> 2022 (First Year)</p>
+                        <p class="text-gray-700 mb-4">A To-Do List software is designed to save tasks which runs on Windows OS Platform.</p>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Technologies:</strong> Pycharm, Python, Windows OS</p>
+                    </div>
+
+                </div>
+
+                <h3 class="text-2xl font-semibold text-gray-700 mt-12 mb-6">Upcoming Projects (In Development - <span class="text-yellow-600">3</span>)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <div class="card project-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/rajafur.png" alt="Raja Furnitures 1" class="project-image active">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">16. Raja Furnitures (E-commerce App)</h4>
+                        <p class="text-sm text-gray-500 mb-2"><strong>Role:</strong> Developer | <strong>Status:</strong> In Development</p>
+                        <p class="text-gray-700 mb-4">Developing a comprehensive e-commerce mobile platform for Raja Furnitures.</p>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li style="text-align: justify;">Aims to expand market reach and provide a seamless online shopping experience.</li>
+                            <li style="text-align: justify;"><strong>Expected Features:</strong> Product browsing, shopping cart, All Category separation, Gmail the product with details.</li>
+                        </ul>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Technologies:</strong> Kotlin/Android Studio, (Backend: Firebase/Node.js)</p>
+                    </div>
+
+                    <div class="card project-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/bookmyevent.png" alt="BookMyEvent App 1" class="project-image active">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">17. BookMyEvent App (Coimbatore Rotaract Club)</h4>
+                        <p class="text-sm text-gray-500 mb-2"><strong>Role:</strong> Developer | <strong>Status:</strong> In Development (Collaboration)</p>
+                        <p class="text-gray-700 mb-4">Mobile application for event booking and management, in collaboration with Coimbatore Rotaract Club.</p>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li style="text-align: justify;">Aims to streamline event participation and enhance community engagement for social causes.</li>
+                            <li style="text-align: justify;"><strong>Expected Features:</strong> Event listings, registration, ticketing, notifications.</li>
+                        </ul>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Technologies:</strong> Kotlin/Android Studio, Firebase - storage ,Firestore, Functions, GCP</p>
+                    </div>
+
+                    <div class="card project-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/devparklogo.png" alt="Devpark 1" class="project-image active">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">18. Devpark (Social Media Platform)</h4>
+                        <p class="text-sm text-gray-500 mb-2"><strong>Role:</strong> Lead Developer | <strong>Status:</strong> In Development</p>
+                        <p class="text-gray-700 mb-4">A social media platform focused on [Student developers, Investors], fostering connections and knowledge sharing.</p>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li style="text-align: justify;"><strong>Expected Features:</strong> User profiles, content sharing, interaction features (likes, comments, Views), notifications, Events, Meetups and Feeds like write-ups & polls.</li>
+                        </ul>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Technologies:</strong> Kotlin, Android Studio, Firebase - Authentication, Realtime DB, Storage, Firestore, Functions, GCP</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="py-16 md:py-20 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-8 section-heading">My Tech Stacks & Skills</h2>
+                <p class="text-lg text-gray-700 mb-10">My expertise is broad and practical, enabling me to contribute across various layers of product development.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <div class="card text-center">
+                        <img src="https://placehold.co/80x80/D1C4E9/4527A0?text=Code" alt="Programming Languages" class="skill-icon">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Programming Languages</h3>
+                        <ul class="list-disc list-inside text-gray-700 text-left mx-auto max-w-xs">
+                            <li style="text-align: justify;"><strong>Kotlin:</strong> Proficient in mobile app development.</li>
+                            <li style="text-align: justify;"><strong>Python:</strong> Strong for AI/Data Science, scripting, and backend.</li>
+                            <li style="text-align: justify;"><strong>C:</strong> Foundational understanding.</li>
+                            <li style="text-align: justify;"><strong>HTML/CSS/JavaScript:</strong> Core web development.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card text-center">
+                        <img src="https://placehold.co/80x80/C8E6C9/2E7D32?text=Cloud" alt="Cloud Platforms & Databases" class="skill-icon">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Cloud Platforms & Databases</h3>
+                        <ul class="list-disc list-inside text-gray-700 text-left mx-auto max-w-xs">
+                            <li style="text-align: justify;"><strong>Firebase:</strong> Extensive experience for backend services.</li>
+                            <li style="text-align: justify;"><strong>GCP (Google Cloud Platform):</strong> Familiarity with Google's cloud services.</li>
+                            <li style="text-align: justify;"><strong>AWS (Amazon Web Services):</strong> Knowledge of leading cloud provider.</li>
+                            <li style="text-align: justify;"><strong>Oracle Cloud:</strong> Certified in Oracle Cloud Essentials.</li>
+                            <li style="text-align: justify;"><strong>ROOMSQL:</strong> Expertise in local Android data persistence.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card text-center">
+                        <img src="https://placehold.co/80x80/FFE0B2/EF6C00?text=Dev" alt="Development Areas" class="skill-icon">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Development Areas</h3>
+                        <ul class="list-disc list-inside text-gray-700 text-left mx-auto max-w-xs">
+                            <li style="text-align: justify;"><strong>Android App Development:</strong> Strong track record.</li>
+                            <li style="text-align: justify;"><strong>Web Development:</strong> Responsive websites.</li>
+                            <li style="text-align: justify;"><strong>CLI Software:</strong> Command Line Interface tools.</li>
+                            <li style="text-align: justify;"><strong>UI/UX Design:</strong> User-friendly interfaces.</li>
+                            <li style="text-align: justify;"><strong>Mockups:</strong> Designing visual prototypes.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card text-center">
+                        <img src="https://placehold.co/80x80/CFD8DC/455A64?text=AI" alt="AI/ML Tools & Techniques" class="skill-icon">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">AI/ML Tools & Techniques</h3>
+                        <ul class="list-disc list-inside text-gray-700 text-left mx-auto max-w-xs">
+                            <li style="text-align: justify;"><strong>Prompt Engineering:</strong> Crafting effective prompts for generative AI.</li>
+                            <li style="text-align: justify;"><strong>AI Tools:</strong> ChatGPT, Google Gemini, Cursor, Google AI Studio, Blackbox, Claude.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card text-center">
+                        <img src="https://placehold.co/80x80/B3E5FC/0277BD?text=Tools" alt="Development Tools" class="skill-icon">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Development Tools</h3>
+                        <ul class="list-disc list-inside text-gray-700 text-left mx-auto max-w-xs">
+                            <li style="text-align: justify;">Android Studio, Figma, Firebase CLI, Linux, PyCharm, VS Code, Wondershare.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card text-center">
+                        <img src="https://placehold.co/80x80/F8BBD0/AD1457?text=Market" alt="Marketing & Deployment" class="skill-icon">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Marketing & Deployment</h3>
+                        <ul class="list-disc list-inside text-gray-700 text-left mx-auto max-w-xs">
+                            <li style="text-align: justify;">Google Play Store Uploading, SEO, AEO, Digital Marketing, Google Search Console, DevOps concepts.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card text-center">
+                        <img src="https://placehold.co/80x80/E1F5FE/01579B?text=Soft" alt="Soft Skills" class="skill-icon">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Soft Skills</h3>
+                        <ul class="list-disc list-inside text-gray-700 text-left mx-auto max-w-xs">
+                            <li style="text-align: justify;">Project Management, Leadership, Communication, Creativity, Problem-Solving, Teamwork.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="awards" class="py-16 md:py-20 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-8 section-heading">Awards & Achievements</h2>
+                <p class="text-lg text-gray-700 mb-10">My work has been consistently recognized for its impact, innovation, and technical excellence.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <div class="card achievement-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/appevent.png" alt="Blood Donor's Junction Awards 1" class="achievement-image active">
+                            <img src="assets/appevent1.png" alt="Blood Donor's Junction Awards 2" class="achievement-image">
+                            <img src="assets/appevent2.png" alt="Blood Donor's Junction Awards 1" class="achievement-image active">
+                            <img src="assets/appevent3.png" alt="Blood Donor's Junction Awards 2" class="achievement-image">
+                            <img src="assets/appevent4.png" alt="Blood Donor's Junction Awards 1" class="achievement-image active">
+                            <img src="assets/appevent5.png" alt="Blood Donor's Junction Awards 2" class="achievement-image">
+                            <img src="assets/appevent7.png" alt="Blood Donor's Junction Awards 2" class="achievement-image">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">For 'Blood Donor's Junction'</h3>
+                        <ul class="list-disc list-inside text-gray-700">
+                            <li style="text-align: justify;">Featured prominently on <strong>Puthuyugam News Channel</strong>.</li>
+                            <li style="text-align: justify;">Received extensive media coverage with articles published in <strong>The Covai Mail</strong> and <strong>The Times of India</strong>.</li>
+                            <li style="text-align: justify;">An article about the app was published in <strong>Vision Adwaith</strong> (November 2022).</li>
+                            <li style="text-align: justify;"><strong>Appreciated by VGM Hospital</strong> for its innovative approach, and contributed blood group data to their blood bank.</li>
+                            <li style="text-align: justify;">Directly impacted and <strong>saved over 160+ lives</strong> by connecting donors with those in need.</li>
+                            <li style="text-align: justify;">My school organized an official app launch event for the application.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card achievement-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/urlgoaward.jpeg" alt="URLgo Awards 1" class="achievement-image active">
+                            <img src="assets/urlgoaward1.jpeg" alt="URLgo Awards 2" class="achievement-image">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">For 'URLgo'</h3>
+                        <ul class="list-disc list-inside text-gray-700">
+                            <li style="text-align: justify;">Achieved significant market recognition by ranking <strong>#44 in the Top New Free in Education category</strong> and <strong>#137 in the Top Education Trending category</strong> in India on Google Play Store.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card achievement-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/rosnetwa.jpg" alt="Rosnet Academy Awards 2" class="achievement-image">
+                            <img src="assets/rosnetacaappeve.png" alt="Rosnet Academy Awards 2" class="achievement-image">
+                            <img src="assets/rosnetacaapp.jpg" alt="Rosnet Academy Awards 1" class="achievement-image active">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">For 'Rosnet Academy App & Website'</h3>
+                        <ul class="list-disc list-inside text-gray-700">
+                            <li style="text-align: justify;">Received an <strong>Award of Honour</strong> from Rosenet Academy in recognition of my contributions as an App Developer and for building, hosting, and configuring the DNS and domain for their website.</li>
+                            <li style="text-align: justify;">Had the privilege of presenting the app at their launch event, receiving positive feedback.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card achievement-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/indiannavy.jpg" alt="SAMRAT Awards 1" class="achievement-image active">
+                            <img src="assets/indiannavy_cer.jpg" alt="SAMRAT Awards 2" class="achievement-image">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">For 'SAMRAT' (Indian Coast Guard Apps)</h3>
+                        <ul class="list-disc list-inside text-gray-700">
+                            <li style="text-align: justify;">Project was <strong>recognized and awarded by Assistant Commando Avinash J</strong> for its critical contribution to digitalizing Indian Coast Guard Operations.</li>
+                            <li style="text-align: justify;">Developed two high-performance apps designed for <strong>zero-internet functionality (offline)</strong>, ensuring military-grade security and enhanced efficiency for sensitive data on the SAMRAT Ship.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card achievement-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/adwaithweb.jpg" alt="Adwaith School Website Awards 1" class="achievement-image active">
+                            <img src="assets/adwaithlettter.png" alt="Adwaith School Website Awards 1" class="achievement-image active">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">For 'Adwaith School Website'</h3>
+                        <ul class="list-disc list-inside text-gray-700">
+                            <li style="text-align: justify;">Awarded a <strong>Certificate of Appreciation from Adwaith Thought Academy</strong> for developing their School Expo website.</li>
+                            <li style="text-align: justify;">The website significantly boosted event visibility, increased reach, and enhanced engagement for the School Expo.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card achievement-slider-card">
+                        <div class="slider-container">
+                            <img src="assets/dellchamps1.png" alt="Dell Champs Awards 1" class="achievement-image active">
+                            <img src="assets/dellchamps2.png" alt="Dell Champs Awards 2" class="achievement-image">
+                            <img src="assets/dellchamps3.png" alt="Dell Champs Awards 1" class="achievement-image active">
+                            <img src="assets/dellchamps4.png" alt="Dell Champs Awards 2" class="achievement-image">
+                            <img src="assets/dellchamps5.png" alt="Dell Champs Awards 1" class="achievement-image active">
+                            <img src="assets/dellchamps6.png" alt="Dell Champs Awards 2" class="achievement-image">
+                            <div class="slider-dots"></div>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Dell Champs Achievements</h3>
+                        <ul class="list-disc list-inside text-gray-700">
+                            <li style="text-align: justify;"><strong>1st place (School Level)</strong> in 2018, 2017, 2016, and 2014.</li>
+                            <li style="text-align: justify;">Participated at the <strong>City Level</strong> in 2016 and 2014.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="education" class="py-16 md:py-20 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-8 section-heading">Education & Certifications</h2>
+
+                <div class="card mb-8">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Education</h3>
+                    <ul class="list-disc list-inside text-gray-700">
+                        <li style="text-align: justify;"><strong>B.Tech in Artificial Intelligence and Data Science</strong>
+                            <ul class="list-circle list-inside ml-4">
+                                <li style="text-align: justify;">Sri Shakthi Institute of Engineering and Technology, Coimbatore, Tamil Nadu</li>
+                                <li style="text-align: justify;">Current CGPA: <strong>8.08</strong></li>
+                                <li style="text-align: justify;">Currently in <strong>7th Semester (Final Year)</strong></li>
+                                <li style="text-align: justify;">Expected Graduation: October 2026</li>
+                            </ul>
+                        </li>
+                        <li style="text-align: justify;"><strong>Adwaith Thought Academy:</strong>
+                            <ul class="list-circle list-inside ml-4">
+                                <li style="text-align: justify;">Where my passion for technology first ignited and developed.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Certifications & Google/Microsoft Badges</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+                        <div class="text-center">
+                            <img src="assets/badges/playstorelistingbadge.png" alt="Google Play Store Listing Certificate" class="certification-image">
+                            <p class="text-sm text-gray-700">Google Play Store Listing</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/googledm.png" alt="Google Digital Unlocked Fundamentals of Digital Marketing" class="certification-image">
+                            <p class="text-sm text-gray-700">Google Digital Unlocked</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/orcle.png" alt="Introduction to Oracle Cloud Essentials" class="certification-image">
+                            <p class="text-sm text-gray-700">Oracle Cloud Essentials</p>
+                        </div>
+
+                        <div class="text-center">
+                            <img src="assets/badges/setupandroidstudio.svg" alt="Set up Android Studio" class="certification-image">
+                            <p class="text-sm text-gray-700">Set up Android Studio</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/baclayout.svg" alt="Build a Basic Layout" class="certification-image">
+                            <p class="text-sm text-gray-700">Build a Basic Layout</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/io25.svg" alt="I/O 2025 - Registered" class="certification-image">
+                            <p class="text-sm text-gray-700">I/O 2025 - Registered/Attendee</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/firebasedataconnect.svg" alt="Firebase Data Connect Private Preview Program Badge" class="certification-image">
+                            <p class="text-sm text-gray-700">Firebase Data Connect</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/mapsinnov.svg" alt="Google Maps Platform Innovators" class="certification-image">
+                            <p class="text-sm text-gray-700">Google Maps Platform Innovators</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/innovatorsgetcertified.svg" alt="Innovators Get Certified" class="certification-image">
+                            <p class="text-sm text-gray-700">Innovators Get Certified</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/intokoltin.svg" alt="Introduction to programming in Kotlin" class="certification-image">
+                            <p class="text-sm text-gray-700">In to Kotlin</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/learningpathway.svg" alt="First Learning Pathway and Quiz badge" class="certification-image">
+                            <p class="text-sm text-gray-700">Learning Pathway</p>
+                        </div>
+                         <div class="text-center">
+                            <img src="assets/badges/learnings.svg" alt="Learning Badge" class="certification-image">
+                            <p class="text-sm text-gray-700">Learning (11)</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/io24.svg" alt="I/O 2024 - Registered/Attendee" class="certification-image">
+                            <p class="text-sm text-gray-700">I/O 2024 - Registered</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/codelab.svg" alt="Completed 5+ Codelab" class="certification-image">
+                            <p class="text-sm text-gray-700">Completed 5+ Codelab</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/androsdk.svg" alt="Android SDK Platform Tools" class="certification-image">
+                            <p class="text-sm text-gray-700">Android SDK Platform Tools</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/androidstucan.svg" alt="Android Studio Canary" class="certification-image">
+                            <p class="text-sm text-gray-700">Android Studio Canary</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/androidstucan.svg" alt="Android Studio Beta" class="certification-image">
+                            <p class="text-sm text-gray-700">Android Studio Beta</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/cloudinnov.svg" alt="Google Cloud Innovator" class="certification-image">
+                            <p class="text-sm text-gray-700">Google Cloud Innovator</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/io23.svg" alt="Google IO Attendee" class="certification-image">
+                            <p class="text-sm text-gray-700">Google IO Attendee ('23)</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/googlebadge.svg" alt="Joined the Google Developer Program" class="certification-image">
+                            <p class="text-sm text-gray-700">Joined Google Dev Program</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/androstuuser.svg" alt="Android Studio User" class="certification-image">
+                            <p class="text-sm text-gray-700">Android Studio User</p>
+                        </div>
+
+                        <div class="text-center">
+                            <img src="assets/badges/cloudcomp.png" alt="Describe cloud computing" class="certification-image">
+                            <p class="text-sm text-gray-700">Describe cloud computing</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/azupeapp.png" alt="Explore Azure App Service" class="certification-image">
+                            <p class="text-sm text-gray-700">Explore Azure App Service</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/analyzeimg.png" alt="Analyze images" class="certification-image">
+                            <p class="text-sm text-gray-700">Analyze images</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/expdatawithpy.png" alt="Explore and analyze data with Python" class="certification-image">
+                            <p class="text-sm text-gray-700">Analyze Data with Python</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/img_4.png" alt="Create a regression model with Azure Machine Learning designer" class="certification-image">
+                            <p class="text-sm text-gray-700">Azure ML Regression Model</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/openai.png" alt="Introduction to Azure OpenAI Service" class="certification-image">
+                            <p class="text-sm text-gray-700">Intro to Azure OpenAI</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="assets/badges/aiazrue.png" alt="Get started with AI on Azure" class="certification-image">
+                            <p class="text-sm text-gray-700">Get started with AI on Azure</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-4"><strong>Google Developer Badges:</strong> 18 | <strong>Microsoft Badges:</strong> 7</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="fortumars" class="py-16 md:py-20">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-8 section-heading">How Fortumars Can Utilize My Skills</h2>
+                <div class="fortumars-logo-container">
+                    <img src="assets/fortumars.png" alt="Fortumars Logo" class="fortumars-logo">
+                </div>
+                <p class="text-lg text-gray-700 mb-10">I believe my unique blend of skills and experiences positions me to contribute to Fortumars in several impactful ways, directly aligning with your company's innovative and ambitious vision:</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="card">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Accelerating Mobile & Web Product Development from Concept to Global Impact</h3>
+                        <p class="text-gray-700">My extensive hands-on experience in independently developing, deploying, and managing user-centric applications on major app stores (Google Play, Amazon App Store) means I can immediately contribute across the entire product lifecycle – from ideation and UI/UX design (Figma) to robust deployment. My ultimate goal is to create <strong>transformative products that are used by people all over the world</strong>, solving significant challenges and delivering tangible value on a global scale, mirroring the vision of bringing impactful solutions to the forefront.</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Driving AI & Data-Driven Innovation with a Visionary Approach</h3>
+                        <p class="text-700">As an AI and Data Science student proficient in Python and advanced AI tools (Gemini, Google AI Studio, Prompt Engineering), I can contribute to developing intelligent features, optimizing data pipelines, and integrating cutting-edge AI capabilities into Fortumars' solutions. My drive is to leverage AI to <strong>build products that genuinely help people and improve their lives globally</strong>, a principle I deeply admire in leaders like Sundar Pichai who scale technology for societal benefit and widespread adoption.</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Building Scalable & Resilient Cloud Infrastructure for Global Reach</h3>
+                        <p class="text-gray-700">My multi-cloud familiarity (GCP, AWS, Oracle Cloud, Firebase) and expertise in secure, efficient data handling (ROOMSQL, Firebase) allow me to work effectively within Fortumars' cloud environment, ensuring robust, scalable, and secure backend systems for critical applications designed for a global user base. My experience with CLI tools and DevOps concepts will further aid in streamlined development and deployment at scale.</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Ensuring Product Adoption & Dominant Market Presence</h3>
+                        <p class="text-gray-700">My practical knowledge of Google Play Store uploading, SEO, AEO, and digital marketing can be instrumental in ensuring Fortumars' products gain wider visibility and achieve greater market adoption. My proven ability to get media coverage for projects (like Blood Donor's Junction) demonstrates a holistic understanding of driving a product's success and reaching a broad audience beyond just its development.</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Cultivating a Vision for Future Products with Strategic Leadership</h3>
+                        <p class="text-gray-700">Beyond immediate tasks, I am deeply passionate about identifying emerging needs and envisioning <strong>what the next universally impactful product could be</strong>. I aim to grow within Fortumars into a role where I can strategically contribute to shaping product roadmaps and leading initiatives that bring innovative solutions to life for the benefit of a broad user base. My strong problem-solving aptitude, leadership potential, and commitment to learning will enable me to take on increasing responsibilities in this direction, aspiring to a <strong>product development leadership position</strong> that drives global impact, much like the vision of Sundar Pichai.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-16 md:py-20 bg-gray-100">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-8 section-heading mx-auto w-fit">Get In Touch</h2>
+                <p class="text-lg text-gray-700 mb-8">I am eager to discuss how my skills and passion can contribute to Fortumars' continued success.</p>
+                <div class="flex flex-col items-center space-y-4">
+                    <p class="text-xl text-gray-800 font-medium">+91 7092988131</p>
+                    <a href="https://www.linkedin.com/in/nithya-prakash-b6797b30a/" target="_blank" class="text-blue-600 hover:underline text-lg">LinkedIn Profile</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="fullscreenModal" class="fullscreen-modal">
+        <span class="close-button">&times;</span>
+        <img class="fullscreen-modal-content" id="modalImage">
+    </div>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+             <p class="mb-2 text-sm md:text-base">
+        I hereby declare that everything you've read above is 100% caffeine-fueled and passionately built — and yes, it's all true!
+    </p><p class="text-sm mt-2">
+    Built at 3AM with dreams and Spotify in the background.
+</p>
+</div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const initSliders = (selector, intervalTime = 3000) => {
+                document.querySelectorAll(selector).forEach(card => {
+                    const sliderContainer = card.querySelector('.slider-container');
+                    const images = sliderContainer.querySelectorAll('img');
+                    const dotsContainer = card.querySelector('.slider-dots');
+                    let currentImageIndex = 0;
+                    let slideInterval;
+
+                    if (images.length === 0) {
+                        if (dotsContainer) dotsContainer.remove();
+                        return;
+                    }
+
+                    if (images.length === 1) {
+                        images[0].classList.add('active');
+                        if (dotsContainer) dotsContainer.remove();
+                        return;
+                    }
+
+                    images.forEach((_, index) => {
+                        const dot = document.createElement('span');
+                        dot.classList.add('dot');
+                        if (index === 0) dot.classList.add('active');
+                        dotsContainer.appendChild(dot);
+                    });
+                    const dots = dotsContainer.querySelectorAll('.dot');
+
+                    const showImage = (index) => {
+                        images.forEach((img, i) => {
+                            img.classList.remove('active');
+                            if (dots[i]) dots[i].classList.remove('active');
+                        });
+                        images[index].classList.add('active');
+                        if (dots[index]) dots[index].classList.add('active');
+                    };
+
+                    const nextImage = () => {
+                        currentImageIndex = (currentImageIndex + 1) % images.length;
+                        showImage(currentImageIndex);
+                    };
+
+                    showImage(currentImageIndex);
+                    slideInterval = setInterval(nextImage, intervalTime);
+
+                    card.addEventListener('mouseenter', () => clearInterval(slideInterval));
+                    card.addEventListener('mouseleave', () => {
+                        slideInterval = setInterval(nextImage, intervalTime);
+                    });
+
+                    dots.forEach((dot, index) => {
+                        dot.addEventListener('click', () => {
+                            clearInterval(slideInterval);
+                            currentImageIndex = index;
+                            showImage(currentImageIndex);
+                            slideInterval = setInterval(nextImage, intervalTime);
+                        });
+                    });
+                });
+            };
+
+            initSliders('.project-slider-card');
+            initSliders('.achievement-slider-card');
+
+
+            const fullscreenModal = document.getElementById('fullscreenModal');
+            const modalImage = document.getElementById('modalImage');
+            const closeButton = document.querySelector('.close-button');
+
+            document.querySelectorAll('.project-image, .achievement-image, .certification-image').forEach(img => {
+                img.addEventListener('click', (event) => {
+                    modalImage.src = event.target.src;
+                    fullscreenModal.classList.add('active');
+                    document.body.classList.add('no-scroll');
+                });
+            });
+
+            closeButton.addEventListener('click', () => {
+                fullscreenModal.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+            });
+
+            fullscreenModal.addEventListener('click', (event) => {
+                if (event.target === fullscreenModal) {
+                    fullscreenModal.classList.remove('active');
+                    document.body.classList.remove('no-scroll');
+                }
+            });
+
+            let lastScrollY = window.scrollY;
+            const mainHeader = document.getElementById('mainHeader');
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > lastScrollY) {
+                    mainHeader.classList.add('header-hidden');
+                } else {
+                    mainHeader.classList.remove('header-hidden');
+                }
+                lastScrollY = window.scrollY;
+            });
+        });
+    </script>
+</body>
+</html>
